@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <RobotArmRoot>$(MSBuildThisFileDirectory)..\</RobotArmRoot>
+    <RobotArmSdkRoot>$(MSBuildThisFileDirectory)</RobotArmSdkRoot>
+    <RobotArmVariant>$(Platform)\$(Configuration)</RobotArmVariant>
+    <RobotArmLibrarySuffix Condition="'$(Configuration)'=='Debug'">d</RobotArmLibrarySuffix>
+    <RobotArmLibrarySuffix Condition="'$(Configuration)'!='Debug'"></RobotArmLibrarySuffix>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary Condition="'$(Configuration)'=='Debug'">MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(Configuration)'!='Debug'">MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level4</WarningLevel>
+      <ConformanceMode>true</ConformanceMode>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <Target Name="ValidateRobotArmPlatform" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(Platform)'!='x64'" Text="RobotArmProject requires x64 and an MSVC x64 Qt kit." />
+  </Target>
+</Project>

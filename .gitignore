@@ -1,0 +1,46 @@
+# Visual Studio user state
+.vs/
+*.vcxproj.user
+*.suo
+*.user
+*.VC.db
+*.VC.opendb
+*.sdf
+ipch/
+
+# Build outputs and SDK header copies
+build/
+**/x64/
+**/Debug/
+**/Release/
+**/debug/
+**/release/
+commonlibdll/common/include/*
+commonlibdll/kinematics/include/*
+commonlibdll/trajectory/include/*
+*.dll
+*.lib
+*.exp
+*.exe
+*.pdb
+*.ilk
+*.obj
+*.pch
+*.log
+*.tlog/
+
+# qmake output contains local Qt paths; regenerate from the pro file
+RobotArmUI/RobotArmUI.vcxproj
+RobotArmUI/RobotArmUI.vcxproj.filters
+RobotArmUI/RobotArmUI.sln
+RobotArmUI/.qmake.stash
+RobotArmUI/Makefile*
+RobotArmUI/qmake*
+RobotArmUI/*.vcxproj.qmake*
+
+# Local settings
+.env
+.env.*
+!.env.example
+*.local.props
+__pycache__/

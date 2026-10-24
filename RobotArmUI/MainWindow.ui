@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>760</width><height>500</height></rect></property>
+  <property name="windowTitle"><string>二连杆机械臂 · 项目初始化</string></property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="mainLayout">
+    <item><widget class="QLabel" name="titleLabel"><property name="text"><string>二连杆机械臂仿真</string></property></widget></item>
+    <item><widget class="QGroupBox" name="stateGroup"><property name="title"><string>当前机械臂状态</string></property>
+     <layout class="QVBoxLayout" name="stateLayout">
+      <item><widget class="QLabel" name="stateLabel"><property name="text"><string>正在加载公共库…</string></property></widget></item>
+      <item><widget class="QPushButton" name="forwardButton"><property name="text"><string>验证正运动学调用</string></property></widget></item>
+     </layout>
+    </widget></item>
+    <item><widget class="QGroupBox" name="workGroup"><property name="title"><string>协作模块</string></property>
+     <layout class="QVBoxLayout" name="workLayout">
+      <item><widget class="QLabel" name="workLabel"><property name="text"><string>界面：参数操作、绘制与动画
+运动学：Common 状态管理、正解与逆解
+轨迹规划：关节空间规划、笛卡尔直线规划
+
+当前为可编译工程骨架，逆解与轨迹算法尚未实现。</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
+     </layout>
+    </widget></item>
+    <item><spacer name="verticalSpacer"><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>40</height></size></property></spacer></item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

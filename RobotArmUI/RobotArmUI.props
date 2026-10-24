@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <RobotArmUseCommon>true</RobotArmUseCommon>
+    <RobotArmUseKinematics>true</RobotArmUseKinematics>
+    <RobotArmUseTrajectory>true</RobotArmUseTrajectory>
+  </PropertyGroup>
+  <Import Project="$(MSBuildThisFileDirectory)..\commonlibdll\RobotArmLib.props" />
+  <PropertyGroup>
+    <OutDir>$(RobotArmRoot)build\bin\$(RobotArmVariant)\</OutDir>
+    <IntDir>$(RobotArmRoot)build\obj\RobotArmUI\$(RobotArmVariant)\</IntDir>
+  </PropertyGroup>
+  <Target Name="DeployRobotArmQt" AfterTargets="Build" Condition="'$(RobotArmDeployQt)'!='false'">
+    <PropertyGroup>
+      <RobotArmQtDeployMode Condition="'$(Configuration)'=='Debug'">--debug</RobotArmQtDeployMode>
+      <RobotArmQtDeployMode Condition="'$(Configuration)'!='Debug'">--release</RobotArmQtDeployMode>
+    </PropertyGroup>
+    <Exec Command="&quot;$(RobotArmQtRoot)\bin\windeployqt.exe&quot; $(RobotArmQtDeployMode) --no-translations --no-compiler-runtime --no-opengl-sw --no-system-d3d-compiler &quot;$(TargetPath)&quot;" />
+  </Target>
+</Project>

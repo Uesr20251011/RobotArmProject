@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64"><Configuration>Debug</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64"><Configuration>Release</Configuration><Platform>x64</Platform></ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FC07DEFD-553F-4344-88DF-0B18F54A03DB}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType><PlatformToolset>v143</PlatformToolset><CharacterSet>Unicode</CharacterSet>
+    <UseDebugLibraries Condition="'$(Configuration)'=='Debug'">true</UseDebugLibraries>
+    <UseDebugLibraries Condition="'$(Configuration)'!='Debug'">false</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <RobotArmUseCommon>true</RobotArmUseCommon>
+    <RobotArmUseKinematics>true</RobotArmUseKinematics>
+    <RobotArmUseTrajectory>true</RobotArmUseTrajectory>
+  </PropertyGroup>
+  <Import Project="..\commonlibdll\RobotArmLib.props" />
+  <PropertyGroup>
+    <OutDir>$(RobotArmRoot)build\tests\$(RobotArmVariant)\</OutDir>
+    <IntDir>$(RobotArmRoot)build\obj\ArchitectureSmoke\$(RobotArmVariant)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup><Link><SubSystem>Console</SubSystem></Link></ItemDefinitionGroup>
+  <ItemGroup><ClCompile Include="ArchitectureSmoke.cpp" /></ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.vcxproj"><Project>{9A36BDD2-7C5B-4C8A-85C1-6B5F36D7C8C3}</Project><LinkLibraryDependencies>false</LinkLibraryDependencies></ProjectReference>
+    <ProjectReference Include="..\Kinematics\Kinematics.vcxproj"><Project>{66856ADC-EE76-435E-B4B0-7299AB9BFEAE}</Project><LinkLibraryDependencies>false</LinkLibraryDependencies></ProjectReference>
+    <ProjectReference Include="..\Trajectory\Trajectory.vcxproj"><Project>{3C10F20C-C9E9-4095-9C09-384C6399F977}</Project><LinkLibraryDependencies>false</LinkLibraryDependencies></ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildThisFileDirectory)BuildSettings.props" />
+  <PropertyGroup>
+    <RobotArmModuleRoot>$(RobotArmSdkRoot)$(RobotArmModule)\</RobotArmModuleRoot>
+    <OutDir>$(RobotArmModuleRoot)bin\$(RobotArmVariant)\</OutDir>
+    <IntDir>$(RobotArmRoot)build\obj\$(ProjectName)\$(RobotArmVariant)\</IntDir>
+    <TargetName>$(ProjectName)$(RobotArmLibrarySuffix)</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <ImportLibrary>$(RobotArmModuleRoot)lib\$(RobotArmVariant)\$(TargetName).lib</ImportLibrary>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <Target Name="PrepareRobotArmSdk" BeforeTargets="PrepareForBuild">
+    <MakeDir Directories="$(RobotArmModuleRoot)include;$(RobotArmModuleRoot)lib\$(RobotArmVariant)" />
+    <Copy SourceFiles="@(RobotArmPublicHeader)" DestinationFolder="$(RobotArmModuleRoot)include" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

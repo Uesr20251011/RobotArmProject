@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildThisFileDirectory)BuildSettings.props" Condition="'$(RobotArmSdkRoot)'==''" />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(RobotArmSdkRoot)common\include;$(RobotArmSdkRoot)kinematics\include;$(RobotArmSdkRoot)trajectory\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(RobotArmSdkRoot)common\lib\$(RobotArmVariant);$(RobotArmSdkRoot)kinematics\lib\$(RobotArmVariant);$(RobotArmSdkRoot)trajectory\lib\$(RobotArmVariant);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies Condition="'$(RobotArmUseCommon)'=='true'">Common$(RobotArmLibrarySuffix).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(RobotArmUseKinematics)'=='true'">Kinematics$(RobotArmLibrarySuffix).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(RobotArmUseTrajectory)'=='true'">Trajectory$(RobotArmLibrarySuffix).lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Target Name="CopyRobotArmRuntime" AfterTargets="Build" Condition="'$(ConfigurationType)'=='Application'">
+    <ItemGroup>
+      <RobotArmRuntime Include="$(RobotArmSdkRoot)common\bin\$(RobotArmVariant)\Common$(RobotArmLibrarySuffix).dll" Condition="'$(RobotArmUseCommon)'=='true'" />
+      <RobotArmRuntime Include="$(RobotArmSdkRoot)kinematics\bin\$(RobotArmVariant)\Kinematics$(RobotArmLibrarySuffix).dll" Condition="'$(RobotArmUseKinematics)'=='true'" />
+      <RobotArmRuntime Include="$(RobotArmSdkRoot)trajectory\bin\$(RobotArmVariant)\Trajectory$(RobotArmLibrarySuffix).dll" Condition="'$(RobotArmUseTrajectory)'=='true'" />
+    </ItemGroup>
+    <Copy SourceFiles="@(RobotArmRuntime)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>
