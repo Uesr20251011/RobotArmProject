@@ -28,6 +28,8 @@ jobs:
           target: desktop
           arch: win64_msvc2022_64
           cache: true
+          # Qt 6.11 uses per-architecture Windows repositories; aqt 3.3.0 predates them.
+          aqtsource: 'git+https://github.com/miurahr/aqtinstall.git@9e49c82edc6d946db376dec907cca5b4b486eec5'
       - name: Generate, build and check DLL calls and Qt startup
         shell: pwsh
         run: ./scripts/Build.ps1 -QtRoot $env:QT_ROOT_DIR -Configuration '${{ matrix.configuration }}' -Test
