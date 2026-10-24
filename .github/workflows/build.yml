@@ -1,0 +1,33 @@
+name: Windows MSVC Qt
+
+on:
+  push:
+    branches: [main, 'feature/**', 'fix/**']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: x64-${{ matrix.configuration }}
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration: [Debug, Release]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Qt MSVC x64
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.11.2'
+          host: windows
+          target: desktop
+          arch: win64_msvc2022_64
+          cache: true
+      - name: Generate, build and check DLL calls and Qt startup
+        shell: pwsh
+        run: ./scripts/Build.ps1 -QtRoot $env:QT_ROOT_DIR -Configuration '${{ matrix.configuration }}' -Test
