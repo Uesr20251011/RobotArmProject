@@ -94,7 +94,9 @@ $env:QT_ROOT = 'E:\Tools_E\QtOrginal\6.11.2\msvc2022_64'
 .\build\bin\x64\Debug\RobotArmUI.exe
 ```
 
-Qt 生成工程带本机路径，因此 Git 中保留 `.pro`，每人首次克隆后都运行构建或生成脚本。新增 `.cpp/.h/.ui` 时，在 `.pro` 对应列表登记，再关闭 VS、运行 `Generate-VS.ps1` 并重新打开解决方案。DLL 新增文件则通过 VS 加入对应原生库项目，并提交相应 `.vcxproj`。
+日常按分工可以打开更小的解决方案：界面使用 **RobotArmUI/RobotArmUI.sln**，运动学使用 **Kinematics/Kinematics.sln**，轨迹规划使用 **Trajectory/Trajectory.sln**，公共库使用 **Common/Common.sln**。三个库的入口都包含自己的依赖库，克隆后可直接用 VS 打开，不要求 Qt；只做库开发的成员可以跳过本节的 Qt 安装和界面生成，改为运行 `scripts/Test-LibrarySolutions.ps1 -Configuration Debug` 验证库构建。DLL 本身不能作为程序启动，运行调试时使用测试程序或界面作为宿主。
+
+Qt 生成的 vcxproj 带本机路径，因此 Git 中保留 `.pro` 和使用相对路径的界面 sln，界面开发者首次克隆后运行构建或生成脚本。新增 `.cpp/.h/.ui` 时，在 `.pro` 对应列表登记，再关闭 VS、运行 `Generate-VS.ps1` 并重新打开解决方案。DLL 新增文件则通过 VS 加入对应原生库项目，并提交相应 `.vcxproj`。
 
 ## 5. 每个任务的完整流程：以运动学为例
 

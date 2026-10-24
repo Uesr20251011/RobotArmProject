@@ -12,6 +12,8 @@
 
 Common、公共 props、根解决方案、构建脚本属于共同基础；修改前先在 Issue 中说明影响。公共头文件签名变更需要其他两个角色确认，并同步改调用点和测试。
 
+界面负责人打开 RobotArmUI/RobotArmUI.sln（首次先生成 Qt 工程）；运动学负责人打开 Kinematics/Kinematics.sln，需要时单独打开 Common/Common.sln；轨迹负责人打开 Trajectory/Trajectory.sln。各库入口包含自己的依赖项目，纯库开发不要求安装 Qt。整体联调继续使用根 RobotArmProject.sln。
+
 ## 分支与提交
 
 - main：可构建的集成版本，团队约定通过 PR 更新。
@@ -32,7 +34,7 @@ Common、公共 props、根解决方案、构建脚本属于共同基础；修�
 
 ## 测试归属
 
-当前 ArchitectureSmoke 检查公共对象、DLL 导出及调用、骨架失败契约；随算法开发在 tests 中扩展断言，或增加独立测试工程。新增工程由维护构建脚本的成员同步更新 Generate-VS.ps1 的工程清单。
+当前 ArchitectureSmoke 检查公共对象、DLL 导出及调用、骨架失败契约；随算法开发在 tests 中扩展断言，或增加独立测试工程。新增工程由维护构建脚本的成员同步更新 Generate-VS.ps1 的工程清单，并同步受影响的独立 sln。Test-LibrarySolutions.ps1 可在没有 Qt 的环境下验证三个库的独立重新生成；Build.ps1 -Test 及 CI 会覆盖独立库、独立界面和整体联调入口。
 
 ## 仓库权限
 

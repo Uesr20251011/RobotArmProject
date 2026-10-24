@@ -4,10 +4,10 @@
 
 | 模块 | 工程 | 负责内容 |
 | --- | --- | --- |
-| 公共状态 | Common/Common.vcxproj | 公共结构、RobotArm 状态，运动学负责人牵头维护 |
-| 运动学 | Kinematics/Kinematics.vcxproj | 正解、两种逆解 |
-| 轨迹规划 | Trajectory/Trajectory.vcxproj | 关节空间及笛卡尔直线轨迹 |
-| 界面 | RobotArmUI/RobotArmUI.pro | 参数操作、机械臂绘制、轨迹及动画 |
+| 公共状态 | Common/Common.sln | 公共结构、RobotArm 状态，运动学负责人牵头维护 |
+| 运动学 | Kinematics/Kinematics.sln | 正解、两种逆解 |
+| 轨迹规划 | Trajectory/Trajectory.sln | 关节空间及笛卡尔直线轨迹 |
+| 界面 | RobotArmUI/RobotArmUI.sln | 参数操作、机械臂绘制、轨迹及动画，工程来源为 .pro |
 
 三个库由 VS 2022 的 **Windows DLL with Exports（带导出项的 DLL）** 模板创建，具有独立导出宏和原生项目引用。界面项目由 Qt `.pro` 经 qmake 转换为 VS 工程及解决方案。
 
@@ -46,7 +46,33 @@ Release 验证：
 .\scripts\Build.ps1 -Configuration Release -Test
 ```
 
-`-Test` 会运行跨 DLL 契约检查，以及使用已部署 Windows 平台插件的 Qt 启动检查。
+`-Test` 会分别重新生成三个独立库解决方案，构建根解决方案和独立界面解决方案，再运行跨 DLL 契约与 Qt 启动检查。
+
+## 按模块独立开发
+
+| 打开入口 | 随入口加载的项目 | 是否需要 Qt |
+| --- | --- | --- |
+| [Common/Common.sln](Common/Common.sln) | Common | 否 |
+| [Kinematics/Kinematics.sln](Kinematics/Kinematics.sln) | Kinematics、Common | 否 |
+| [Trajectory/Trajectory.sln](Trajectory/Trajectory.sln) | Trajectory、Common、Kinematics | 否 |
+| [RobotArmUI/RobotArmUI.sln](RobotArmUI/RobotArmUI.sln) | RobotArmUI、三个库 | 是，先运行 Generate-VS.ps1 |
+
+三个库的 sln 随仓库提交，克隆后可直接双击对应文件，用 VS 选择 Debug / Release、x64，然后生成解决方案。依赖库会一起构建，不需要预先编译根解决方案或安装 Qt。库是 DLL，调试运行时需要界面或测试程序作为宿主。
+
+只验证库解决方案，在普通 PowerShell 中执行：
+
+```powershell
+.\scripts\Test-LibrarySolutions.ps1 -Configuration Debug
+.\scripts\Test-LibrarySolutions.ps1 -Configuration Release
+```
+
+如果只需构建一个库，可在 VS 2022 的 Developer PowerShell 中执行（以运动学为例）：
+
+```powershell
+MSBuild .\Kinematics\Kinematics.sln /m /p:Configuration=Debug /p:Platform=x64
+```
+
+所有入口引用同一份 vcxproj 和源码，输出仍由公共 props 统一管理。不要同时在多个 VS 窗口构建同一配置，以免争用同一输出目录。界面 sln 也已纳入 Git；重新生成 Qt 工程不会改变它的项目列表或相对路径。
 
 ## 公共库目录
 
