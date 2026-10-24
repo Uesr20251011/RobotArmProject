@@ -16,7 +16,7 @@
 - [x] 增加跨 DLL 冒烟测试、构建脚本及 Windows CI，验证公共状态、正解和未实现入口的失败行为。
 - [x] 构建 x64 Debug 和 Release，检查 DLL 导出，运行测试及 Qt 启动检查。
 - [x] 编写 README、三人协作流程、PR 模板及 .gitignore，检查提交清单只包含源码与文档。
-- [ ] 初始化 main 分支，提交并推送当前已登录账号的公有 RobotArmProject 仓库；验证远端提交与本地一致。
+- [x] 初始化 main 分支，提交并推送当前已登录账号的公有 RobotArmProject 仓库；验证远端提交与本地一致。
 
 ## 验收命令
 
