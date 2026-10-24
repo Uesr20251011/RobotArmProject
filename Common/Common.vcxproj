@@ -91,6 +91,7 @@
   <Import Project="..\commonlibdll\LibraryOutput.props" />
   <ItemGroup>
     <ClInclude Include="CommonExport.h" />
+    <ClInclude Include="Status.h" />
     <ClInclude Include="ArmTypes.h" />
     <ClInclude Include="RobotArm.h" />
     <ClInclude Include="framework.h" />
@@ -98,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <RobotArmPublicHeader Include="CommonExport.h" />
+    <RobotArmPublicHeader Include="Status.h" />
     <RobotArmPublicHeader Include="ArmTypes.h" />
     <RobotArmPublicHeader Include="RobotArm.h" />
   </ItemGroup>
