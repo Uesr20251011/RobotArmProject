@@ -16,6 +16,7 @@
 - [GitHub 多人协作指南](docs/GitHub多人协作指南.md)：从加入仓库到第一次 PR，含图形界面操作和命令速查。
 - [开发与分工约定](CONTRIBUTING.md)
 - [架构和接口约定](docs/architecture.md)
+- [初始化验证记录](docs/initialization-verification.md)
 - [原始设计](面向对象作业设计.md)
 
 ## 构建与运行

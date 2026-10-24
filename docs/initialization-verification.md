@@ -16,6 +16,7 @@
 | 只从 Git 暂存源码导出到全新、含空格的路径，重新生成并构建 Debug | 通过，DLL 调用和 Qt 启动检查通过 |
 | 提交差异格式检查 | 通过 |
 | 独立只读工程审查 | 未发现重要问题 |
+| GitHub Actions Windows x64 Debug / Release | 两个任务均通过 |
 
 全新路径验证位于系统临时目录，MSBuild 提示临时目录可能影响增量构建；正常项目目录的 Debug / Release 构建没有该提示。
 
@@ -32,4 +33,6 @@
 
 此记录证明工程骨架、导出导入与运行库部署链路可用。逆运动学和轨迹规划保留明确失败的骨架入口，界面交互、绘制和动画仍由对应角色开发。相关算法完成时需要更新初始化断言并增加算法测试。
 
-GitHub 公有仓库已创建并上传；远端 Windows 检查的实时结果见 [GitHub Actions](https://github.com/Uesr20251011/RobotArmProject/actions)。本记录中的“通过”描述本机实际结果，不代替远端检查状态。
+GitHub 公有仓库已创建并上传。[远端检查第 40053348829 次运行](https://github.com/Uesr20251011/RobotArmProject/actions/runs/40053348829) 对工程版本 `9c2b6283c9ee8786656c0dab579622019187d40b` 的 Debug / Release 两个任务均通过，包括库编译、Qt 工程生成、DLL 调用检查和 Windows 平台插件启动检查。随后提交仅补充文档记录。
+
+远端安装工具固定到 aqtinstall 提交 `9e49c82edc6d946db376dec907cca5b4b486eec5`，以支持 Qt 6.11 的 Windows 下载目录。相关背景见 [aqtinstall 官方变更记录](https://aqtinstall.readthedocs.io/en/latest/CHANGELOG.html)。后续提交的实时状态见 [GitHub Actions](https://github.com/Uesr20251011/RobotArmProject/actions)。
