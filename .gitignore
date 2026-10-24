@@ -29,10 +29,9 @@ commonlibdll/trajectory/include/*
 *.log
 *.tlog/
 
-# qmake output contains local Qt paths; regenerate from the pro file
+# Keep RobotArmUI.sln tracked; generated projects contain local Qt paths
 RobotArmUI/RobotArmUI.vcxproj
 RobotArmUI/RobotArmUI.vcxproj.filters
-RobotArmUI/RobotArmUI.sln
 RobotArmUI/.qmake.stash
 RobotArmUI/Makefile*
 RobotArmUI/qmake*

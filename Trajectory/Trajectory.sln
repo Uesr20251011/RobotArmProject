@@ -1,0 +1,30 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Trajectory", "Trajectory.vcxproj", "{3C10F20C-C9E9-4095-9C09-384C6399F977}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "..\Common\Common.vcxproj", "{9A36BDD2-7C5B-4C8A-85C1-6B5F36D7C8C3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Kinematics", "..\Kinematics\Kinematics.vcxproj", "{66856ADC-EE76-435E-B4B0-7299AB9BFEAE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C10F20C-C9E9-4095-9C09-384C6399F977}.Debug|x64.ActiveCfg = Debug|x64
+		{3C10F20C-C9E9-4095-9C09-384C6399F977}.Debug|x64.Build.0 = Debug|x64
+		{3C10F20C-C9E9-4095-9C09-384C6399F977}.Release|x64.ActiveCfg = Release|x64
+		{3C10F20C-C9E9-4095-9C09-384C6399F977}.Release|x64.Build.0 = Release|x64
+		{9A36BDD2-7C5B-4C8A-85C1-6B5F36D7C8C3}.Debug|x64.ActiveCfg = Debug|x64
+		{9A36BDD2-7C5B-4C8A-85C1-6B5F36D7C8C3}.Debug|x64.Build.0 = Debug|x64
+		{9A36BDD2-7C5B-4C8A-85C1-6B5F36D7C8C3}.Release|x64.ActiveCfg = Release|x64
+		{9A36BDD2-7C5B-4C8A-85C1-6B5F36D7C8C3}.Release|x64.Build.0 = Release|x64
+		{66856ADC-EE76-435E-B4B0-7299AB9BFEAE}.Debug|x64.ActiveCfg = Debug|x64
+		{66856ADC-EE76-435E-B4B0-7299AB9BFEAE}.Debug|x64.Build.0 = Debug|x64
+		{66856ADC-EE76-435E-B4B0-7299AB9BFEAE}.Release|x64.ActiveCfg = Release|x64
+		{66856ADC-EE76-435E-B4B0-7299AB9BFEAE}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+EndGlobal

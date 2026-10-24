@@ -41,7 +41,9 @@ Common 不依赖 Kinematics，避免循环依赖。RobotArm 在长度或角度�
 - commonlibdll/RobotArmLib.props：公共 include/lib 搜索路径、按依赖选择导入库、自动复制运行 DLL。
 - 公共输出布局为 `<模块>/include`、`<模块>/lib/x64/<配置>`、`<模块>/bin/x64/<配置>`。隔离 Debug/Release，避免覆盖。
 - 模块项目引用负责构建顺序；props 负责导入与输出。库项目禁止自动链接全部库，防止自引用和循环依赖。
-- RobotArmUI.pro 是界面工程来源；生成脚本调用 Qt qmake 的 VS 生成器，随后注入公共 props 和原生库项目引用。生成的界面 vcxproj/sln 含本机 Qt 路径，不提交 Git；根解决方案固定，生成后可直接用 VS 打开。
+- Common/Common.sln、Kinematics/Kinematics.sln、Trajectory/Trajectory.sln 是独立的库开发入口，分别包含目标库及其完整依赖项目。它们只引用现有 vcxproj，不复制工程，也不依赖 Qt；均纳入 Git。
+- RobotArmUI.pro 是界面工程来源；生成脚本调用 Qt qmake 的 VS 生成器，随后注入公共 props 和原生库项目引用。界面 vcxproj 含本机 Qt 路径，不提交 Git。根解决方案和 RobotArmUI/RobotArmUI.sln 只含稳定的相对路径和项目 GUID，均纳入 Git；界面项目需先在本机生成再打开。
+- 各解决方案使用同一组公共输出目录；不要并发构建同一配置。新增项目或改变依赖关系时，需同步独立解决方案的项目列表和配置映射。
 - 代码和头文件只在模块源码目录编辑，commonlibdll/include 中的副本由编译发布，不提交。
 
 ## 算法接口约定
