@@ -6,16 +6,16 @@ class COMMON_API RobotArm {
 public:
     RobotArm();
     ~RobotArm();
-    // Failed setters leave every member unchanged.
-    [[nodiscard]] Status SetPara(ArmLengthStruct length, ArmAngleStruct angle, ArmPosStruct pos);
-    [[nodiscard]] Status SetPara(ArmLengthStruct length, ArmAngleStruct angle);
-    [[nodiscard]] Status SetPara(ArmAngleStruct angle);
+    void SetPara(ArmLengthStruct length, ArmAngleStruct angle, ArmPosStruct pos);
+    void SetPara(ArmLengthStruct length, ArmAngleStruct angle);
+    void SetPara(ArmAngleStruct angle);
     ArmLengthStruct QueryLength() const;
     ArmAngleStruct QueryAngle() const;
     Point2D QueryPosL1() const;
     Point2D QueryPosL2() const;
     ArmPosStruct QueryPos() const;
 private:
+    void UpdatePosition();
     ArmLengthStruct armL;
     ArmAngleStruct armQ;
     ArmPosStruct armP;

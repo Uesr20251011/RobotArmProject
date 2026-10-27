@@ -2,23 +2,6 @@
 #include "ui_MainWindow.h"
 #include <QStatusBar>
 
-namespace {
-QString DescribeStatus(Status status)
-{
-    switch (status) {
-    case Status::Success: return QObject::tr("执行成功");
-    case Status::InvalidParameter: return QObject::tr("机械臂或时间参数不合法");
-    case Status::InvalidInput: return QObject::tr("输入包含无效数值");
-    case Status::NotInitialized: return QObject::tr("尚未初始化");
-    case Status::Unreachable: return QObject::tr("目标位置不可达");
-    case Status::NonUniqueSolution: return QObject::tr("无法确定唯一解");
-    case Status::NumericalError: return QObject::tr("计算结果超出有效数值范围");
-    case Status::NotImplemented: return QObject::tr("该算法尚未实现");
-    }
-    return QObject::tr("未知状态");
-}
-}
-
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), timer(new QTimer(this)), currentFrame(0)
 {
@@ -45,17 +28,7 @@ void MainWindow::UpdateDisplay()
 
 void MainWindow::OnForwardSolve()
 {
-    const auto result = ForwardSolve(arm.QueryLength(), arm.QueryAngle());
-    if (result.status != Status::Success) {
-        statusBar()->showMessage(tr("正运动学失败：%1。机械臂状态保持不变。")
-            .arg(DescribeStatus(result.status)));
-        return;
-    }
-    const auto status = arm.SetPara(arm.QueryLength(), arm.QueryAngle(), result.pos);
-    if (status != Status::Success) {
-        statusBar()->showMessage(tr("机械臂状态更新失败：%1。").arg(DescribeStatus(status)));
-        return;
-    }
+    arm.SetPara(arm.QueryLength(), arm.QueryAngle(), ForwardSolve(arm.QueryLength(), arm.QueryAngle()));
     UpdateDisplay();
     statusBar()->showMessage(tr("已通过运动学 DLL 完成正运动学调用。"));
 }
