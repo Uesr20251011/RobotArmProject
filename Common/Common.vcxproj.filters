@@ -2,7 +2,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <ItemGroup>
     <ClInclude Include="CommonExport.h" />
-    <ClInclude Include="Status.h" />
     <ClInclude Include="ArmTypes.h" />
     <ClInclude Include="RobotArm.h" />
     <ClInclude Include="framework.h" />

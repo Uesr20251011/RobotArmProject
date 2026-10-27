@@ -1,29 +1,21 @@
 #include "pch.h"
 #include "Kinematics.h"
 #include "RobotArm.h"
-#include <cmath>
 
-FKResult ForwardSolve(ArmLengthStruct length, ArmAngleStruct angle)
+ArmPosStruct ForwardSolve(ArmLengthStruct length, ArmAngleStruct angle)
 {
     RobotArm arm;
-    const auto status = arm.SetPara(length, angle);
-    if (status != Status::Success) return {status};
-    return {Status::Success, arm.QueryPos()};
+    arm.SetPara(length, angle);
+    return arm.QueryPos();
 }
-IKResult InverseSolve(ArmLengthStruct length, Point2D target, bool /*elbowUp*/)
+bool InverseSolve(ArmLengthStruct /*length*/, Point2D /*target*/,
+                  bool /*elbowUp*/, ArmAngleStruct& /*result*/)
 {
-    if (!std::isfinite(length.length1) || !std::isfinite(length.length2)
-        || !std::isfinite(target.x) || !std::isfinite(target.y)) return {Status::InvalidInput};
-    if (length.length1 <= 0.0 || length.length2 <= 0.0) return {Status::InvalidParameter};
     // Implementation belongs to the kinematics workstream.
-    return {Status::NotImplemented};
+    return false;
 }
-IKResult InverseSolve(ArmLengthStruct length, ArmPosStruct pos)
+bool InverseSolve(ArmLengthStruct /*length*/, ArmPosStruct /*pos*/, ArmAngleStruct& /*result*/)
 {
-    if (!std::isfinite(length.length1) || !std::isfinite(length.length2)
-        || !std::isfinite(pos.L1.x) || !std::isfinite(pos.L1.y)
-        || !std::isfinite(pos.L2.x) || !std::isfinite(pos.L2.y)) return {Status::InvalidInput};
-    if (length.length1 <= 0.0 || length.length2 <= 0.0) return {Status::InvalidParameter};
     // Implementation belongs to the kinematics workstream.
-    return {Status::NotImplemented};
+    return false;
 }
