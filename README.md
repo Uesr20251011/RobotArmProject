@@ -52,8 +52,8 @@ Release 验证：
 
 | 打开入口 | 随入口加载的项目 | 是否需要 Qt |
 | --- | --- | --- |
-| [Common/Common.sln](Common/Common.sln) | Common | 否 |
-| [Kinematics/Kinematics.sln](Kinematics/Kinematics.sln) | Kinematics、Common | 否 |
+| [Common/Common.sln](Common/Common.sln) | Common、Kinematics | 否 |
+| [Kinematics/Kinematics.sln](Kinematics/Kinematics.sln) | Kinematics | 否 |
 | [Trajectory/Trajectory.sln](Trajectory/Trajectory.sln) | Trajectory、Common、Kinematics | 否 |
 | [RobotArmUI/RobotArmUI.sln](RobotArmUI/RobotArmUI.sln) | RobotArmUI、三个库 | 是，先运行 Generate-VS.ps1 |
 
@@ -98,6 +98,6 @@ build/                            本机构建产物，Git 忽略
 
 ## 当前进度
 
-已实现公共状态及正解基础调用，可编译并启动界面。**逆解、轨迹规划、完整操作界面和绘制动画仍需按分工开发**。未实现的逆解返回 false，轨迹规划返回 false 并清空结果，避免把空骨架当成可用算法。
+已实现公共状态、正解及两种逆解，可编译并启动界面。逆解返回 `IKStatus`，仅成功时更新输出角度。**轨迹规划、完整操作界面和绘制动画仍需按分工开发**。未实现的轨迹规划返回 false 并清空结果，避免把空骨架当成可用算法。
 
 提交与 PR 会触发 Windows Debug / Release 构建及启动检查。检查范围以工作流实际结果为准。

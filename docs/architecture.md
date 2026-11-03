@@ -11,7 +11,7 @@ flowchart TD
     UI --> C[Common · DLL]
     T --> K
     T --> C
-    K --> C
+    C --> K
 ```
 
 | 模块 | 职责 | 负责人 |
@@ -21,15 +21,15 @@ flowchart TD
 | Kinematics | 正运动学、两种逆运动学接口及几何边界处理 | 运动学开发者 |
 | Trajectory | 关节空间与笛卡尔直线轨迹、采样及失败处理 | 轨迹规划开发者 |
 
-Common 不依赖 Kinematics，避免循环依赖。RobotArm 在长度或角度变化时计算基础连杆几何位置；ForwardSolve 复用这个入口。完整三参数 SetPara 按原设计保存调用者提供的状态。
+Common DLL 单向依赖 Kinematics DLL。RobotArm 在长度或角度变化时调用 ForwardSolve 更新连杆位置，正解公式集中在 Kinematics 中。Kinematics 只使用 Common/ArmTypes.h 的值类型，不链接 Common DLL，也不包含 RobotArm.h；独立构建时会发布该类型头文件，不需要先构建 Common。完整三参数 SetPara 按原设计保存调用者提供的状态。
 
 ## 初始化范围
 
 - Common 的状态访问、自动位置更新及正运动学基础路径已实现，以便验证跨 DLL 调用。
-- 两个 InverseSolve 目前返回 false，保持输出角度不变；由运动学负责人实现。
+- 两个 InverseSolve 返回 IKStatus，仅 Success 更新输出角度；失败或奇异位形保持输出角度不变。末端目标逆解先归一化长度与坐标，再计算余弦定理，支持不同长度单位。
 - 两个规划入口目前清空 result 并返回 false；由轨迹负责人实现。
 - Qt 界面包含 Designer 主窗口、原设计中的成员和槽函数，显示模块状态；操作和动画由界面负责人实现。
-- 骨架检查只验证初始化契约，不代表逆运动学或轨迹算法已经完成。负责人实现后需相应扩充测试。
+- 检查覆盖跨 DLL 状态更新、正逆解、几何边界及尺度变化；轨迹检查仍只验证骨架失败契约。
 
 ## 构建契约
 

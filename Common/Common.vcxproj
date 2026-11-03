@@ -87,8 +87,10 @@
   </ImportGroup>
   <PropertyGroup>
     <RobotArmModule>common</RobotArmModule>
+    <RobotArmUseKinematics>true</RobotArmUseKinematics>
   </PropertyGroup>
   <Import Project="..\commonlibdll\LibraryOutput.props" />
+  <Import Project="..\commonlibdll\RobotArmLib.props" />
   <ItemGroup>
     <ClInclude Include="CommonExport.h" />
     <ClInclude Include="ArmTypes.h" />
@@ -107,6 +109,12 @@
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kinematics\Kinematics.vcxproj">
+      <Project>{66856adc-ee76-435e-b4b0-7299ab9bfeae}</Project>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
