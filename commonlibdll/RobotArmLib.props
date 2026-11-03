@@ -15,7 +15,7 @@
   <Target Name="CopyRobotArmRuntime" AfterTargets="Build" Condition="'$(ConfigurationType)'=='Application'">
     <ItemGroup>
       <RobotArmRuntime Include="$(RobotArmSdkRoot)common\bin\$(RobotArmVariant)\Common$(RobotArmLibrarySuffix).dll" Condition="'$(RobotArmUseCommon)'=='true'" />
-      <RobotArmRuntime Include="$(RobotArmSdkRoot)kinematics\bin\$(RobotArmVariant)\Kinematics$(RobotArmLibrarySuffix).dll" Condition="'$(RobotArmUseKinematics)'=='true'" />
+      <RobotArmRuntime Include="$(RobotArmSdkRoot)kinematics\bin\$(RobotArmVariant)\Kinematics$(RobotArmLibrarySuffix).dll" Condition="'$(RobotArmUseKinematics)'=='true' or '$(RobotArmUseCommon)'=='true'" />
       <RobotArmRuntime Include="$(RobotArmSdkRoot)trajectory\bin\$(RobotArmVariant)\Trajectory$(RobotArmLibrarySuffix).dll" Condition="'$(RobotArmUseTrajectory)'=='true'" />
     </ItemGroup>
     <Copy SourceFiles="@(RobotArmRuntime)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />

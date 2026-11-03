@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "RobotArm.h"
-#include <cmath>
+#include "Kinematics.h"
 
 RobotArm::RobotArm() : armL{100.0, 100.0}, armQ{0.0, 0.0}, armP{} { UpdatePosition(); }
 RobotArm::~RobotArm() = default;
@@ -28,8 +28,5 @@ Point2D RobotArm::QueryPosL2() const { return armP.L2; }
 ArmPosStruct RobotArm::QueryPos() const { return armP; }
 void RobotArm::UpdatePosition()
 {
-    armP.L1 = {armL.length1 * std::cos(armQ.q1), armL.length1 * std::sin(armQ.q1)};
-    const double endAngle = armQ.q1 + armQ.q2;
-    armP.L2 = {armP.L1.x + armL.length2 * std::cos(endAngle),
-               armP.L1.y + armL.length2 * std::sin(endAngle)};
+    armP = ForwardSolve(armL, armQ);
 }

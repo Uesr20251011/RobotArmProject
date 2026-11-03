@@ -2,9 +2,18 @@
 #include "ArmTypes.h"
 #include "KinematicsExport.h"
 
+enum class IKStatus
+{
+    Success,
+    InvalidLength,
+    Unreachable,
+    SingularStraight,
+    SingularFolded
+};
+
 KINEMATICS_API ArmPosStruct ForwardSolve(ArmLengthStruct length, ArmAngleStruct angle);
-// Failure preserves result. Inverse solvers are unimplemented in the scaffold.
-KINEMATICS_API bool InverseSolve(ArmLengthStruct length, Point2D target,
-                                 bool elbowUp, ArmAngleStruct& result);
-KINEMATICS_API bool InverseSolve(ArmLengthStruct length, ArmPosStruct pos,
-                                 ArmAngleStruct& result);
+// Only Success updates result. elbowUp selects negative q2.
+KINEMATICS_API IKStatus InverseSolve(ArmLengthStruct length, Point2D target,
+                                    bool elbowUp, ArmAngleStruct& result);
+KINEMATICS_API IKStatus InverseSolve(ArmLengthStruct length, ArmPosStruct pos,
+                                    ArmAngleStruct& result);
