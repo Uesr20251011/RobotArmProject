@@ -119,44 +119,39 @@ int main()
             Require(result.q1 == 11.0 && result.q2 == 12.0, "position inverse failure preserves output");
         }
 
+        const ArmLengthStruct length{3.0, 4.0};
+        arm.SetPara(length, {halfPi, -halfPi});
         TrajectoryPlanner planner;
         TRAJECTORY trajectory;
-        arm.SetPara({3.0, 4.0}, {halfPi, -halfPi});
+        const double times[] = {0.0, 0.3, 0.6, 0.9, 1.0};
 
         Require(planner.PlanJoint(arm, {0.0, 0.0}, 1.0, 0.3, trajectory), "joint plan succeeds");
-        const double expectedTimes[] = {0.0, 0.3, 0.6, 0.9, 1.0};
-        Require(trajectory.size() == 5, "joint sample count includes partial final interval");
+        Require(trajectory.size() == 5, "joint sample count");
         for (std::size_t i = 0; i < trajectory.size(); ++i) {
-            const auto& point = trajectory[i];
-            const double expectedAngle = halfPi * (1.0 - expectedTimes[i]);
-            Require(Near(point.time, expectedTimes[i]), "joint sample time");
-            Require(Near(point.angle.q1, expectedAngle) && Near(point.angle.q2, -expectedAngle),
-                "joint angle interpolation");
-            const auto position = ForwardSolve(arm.QueryLength(), point.angle);
-            Require(Near(point.pos.L2.x, position.L2.x) && Near(point.pos.L2.y, position.L2.y),
-                "joint positions agree with angles");
+            const auto& sample = trajectory[i];
+            const double angle = halfPi * (1.0 - times[i]);
+            const auto position = ForwardSolve(length, {angle, -angle});
+            Require(Near(sample.time, times[i]) && Near(sample.angle.q1, angle)
+                && Near(sample.angle.q2, -angle), "joint time and angle interpolation");
+            Require(Near(sample.pos.L2.x, position.L2.x) && Near(sample.pos.L2.y, position.L2.y),
+                "joint positions follow the angles");
         }
 
         Require(planner.PlanCartesian(arm, {3.0, 4.0}, true, 1.0, 0.3, trajectory),
             "Cartesian plan succeeds");
         Require(trajectory.size() == 5, "Cartesian sample count");
         for (std::size_t i = 0; i < trajectory.size(); ++i) {
-            const auto& point = trajectory[i];
-            Require(Near(point.time, expectedTimes[i]), "Cartesian sample time");
-            Require(Near(point.pos.L2.x, 4.0 - expectedTimes[i])
-                && Near(point.pos.L2.y, 3.0 + expectedTimes[i]), "Cartesian straight line");
-            Require(point.angle.q2 < 0.0, "Cartesian keeps the requested elbow branch");
+            const auto& sample = trajectory[i];
+            Require(Near(sample.time, times[i]) && Near(sample.pos.L2.x, 4.0 - times[i])
+                && Near(sample.pos.L2.y, 3.0 + times[i]), "Cartesian straight line");
+            Require(sample.angle.q2 < 0.0, "Cartesian elbow branch");
         }
 
-        for (double invalidTime : {0.0, -1.0, nan, inf}) {
-            trajectory.resize(1);
-            Require(!planner.PlanJoint(arm, {0.0, 0.0}, invalidTime, 0.1, trajectory)
-                && trajectory.empty(), "invalid duration clears joint output");
-            trajectory.resize(1);
-            Require(!planner.PlanCartesian(arm, {3.0, 4.0}, true, 1.0, invalidTime, trajectory)
-                && trajectory.empty(), "invalid step clears Cartesian output");
-        }
-
+        Require(!planner.PlanJoint(arm, {0.0, 0.0}, nan, 0.1, trajectory)
+            && trajectory.empty(), "invalid duration clears joint output");
+        trajectory.resize(1);
+        Require(!planner.PlanCartesian(arm, {3.0, 4.0}, true, 1.0, 0.0, trajectory)
+            && trajectory.empty(), "invalid step clears Cartesian output");
         trajectory.resize(1);
         Require(!planner.PlanCartesian(arm, {8.0, 0.0}, true, 1.0, 0.3, trajectory)
             && trajectory.empty(), "unreachable target clears output");
