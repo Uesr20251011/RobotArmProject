@@ -5,8 +5,8 @@ CONFIG += c++17 debug_and_release
 !contains(QMAKE_COMPILER, msvc):error("Select the Qt MSVC x64 kit, then use scripts/Generate-VS.ps1.")
 !contains(QT_ARCH, x86_64):error("RobotArmProject requires x64.")
 
-SOURCES += main.cpp MainWindow.cpp
-HEADERS += MainWindow.h
+SOURCES += main.cpp MainWindow.cpp ArmCanvas.cpp
+HEADERS += MainWindow.h ArmCanvas.h
 FORMS += MainWindow.ui
 QMAKE_CXXFLAGS += /utf-8 /DNOMINMAX
 CONFIG(debug, debug|release): BUILD_CONFIG = Debug
