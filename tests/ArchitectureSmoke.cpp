@@ -119,15 +119,48 @@ int main()
             Require(result.q1 == 11.0 && result.q2 == 12.0, "position inverse failure preserves output");
         }
 
-        // Trajectory planning remains unimplemented.
+        const ArmLengthStruct length{3.0, 4.0};
+        arm.SetPara(length, {halfPi, -halfPi});
         TrajectoryPlanner planner;
-        TRAJECTORY trajectory(1);
-        Require(!planner.PlanJoint(arm, {1.0, 1.0}, 1.0, 0.1, trajectory), "joint scaffold reports failure");
-        Require(trajectory.empty(), "joint failure clears trajectory");
+        TRAJECTORY trajectory;
+        const double times[] = {0.0, 0.3, 0.6, 0.9, 1.0};
+
+        Require(planner.PlanJoint(arm, {0.0, 0.0}, 1.0, 0.3, trajectory), "joint plan succeeds");
+        Require(trajectory.size() == 5, "joint sample count");
+        for (std::size_t i = 0; i < trajectory.size(); ++i) {
+            const auto& sample = trajectory[i];
+            const double angle = halfPi * (1.0 - times[i]);
+            const auto position = ForwardSolve(length, {angle, -angle});
+            Require(Near(sample.time, times[i]) && Near(sample.angle.q1, angle)
+                && Near(sample.angle.q2, -angle), "joint time and angle interpolation");
+            Require(Near(sample.pos.L2.x, position.L2.x) && Near(sample.pos.L2.y, position.L2.y),
+                "joint positions follow the angles");
+        }
+
+        Require(planner.PlanCartesian(arm, {3.0, 4.0}, true, 1.0, 0.3, trajectory),
+            "Cartesian plan succeeds");
+        Require(trajectory.size() == 5, "Cartesian sample count");
+        for (std::size_t i = 0; i < trajectory.size(); ++i) {
+            const auto& sample = trajectory[i];
+            Require(Near(sample.time, times[i]) && Near(sample.pos.L2.x, 4.0 - times[i])
+                && Near(sample.pos.L2.y, 3.0 + times[i]), "Cartesian straight line");
+            Require(sample.angle.q2 < 0.0, "Cartesian elbow branch");
+        }
+
+        Require(!planner.PlanJoint(arm, {0.0, 0.0}, nan, 0.1, trajectory)
+            && trajectory.empty(), "invalid duration clears joint output");
         trajectory.resize(1);
-        Require(!planner.PlanCartesian(arm, {4.0, 3.0}, true, 1.0, 0.1, trajectory), "Cartesian scaffold reports failure");
-        Require(trajectory.empty(), "Cartesian failure clears trajectory");
-        Require(Near(arm.QueryPosL2().y, 4.0), "planning must not mutate arm");
+        Require(!planner.PlanCartesian(arm, {3.0, 4.0}, true, 1.0, 0.0, trajectory)
+            && trajectory.empty(), "invalid step clears Cartesian output");
+        trajectory.resize(1);
+        Require(!planner.PlanCartesian(arm, {8.0, 0.0}, true, 1.0, 0.3, trajectory)
+            && trajectory.empty(), "unreachable target clears output");
+        trajectory.resize(1);
+        Require(!planner.PlanCartesian(arm, {-4.0, -3.0}, true, 1.0, 2.0, trajectory)
+            && trajectory.empty(), "unreachable segment interior clears output");
+        Require(Near(arm.QueryAngle().q1, halfPi) && Near(arm.QueryAngle().q2, -halfPi)
+            && Near(arm.QueryPosL2().x, 4.0) && Near(arm.QueryPosL2().y, 3.0),
+            "planning preserves the arm state");
         std::cout << "Architecture smoke checks passed.\n";
         return 0;
     } catch (const std::exception& error) {
